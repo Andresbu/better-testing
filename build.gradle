@@ -1,0 +1,58 @@
+apply plugin: 'groovy'
+apply plugin: 'maven-publish'
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            groupId 'ch.nampa'
+            artifactId 'better-testing'
+            version '0.2-SNAPSHOT'
+
+            from components.java
+        }
+    }
+}
+
+dependencies {
+    compile gradleApi()
+    compile localGroovy()
+}
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'nu.studer:gradle-plugindev-plugin:1.0.3'
+    }
+}
+
+apply plugin: 'nu.studer.plugindev'
+
+group = 'ch.noser'
+version = '0.0.1.DEV'
+
+plugindev {
+    pluginId = 'ch.noser.better-testing'
+    pluginImplementationClass 'ch.noser.bettertesting.BetterTesting'
+    pluginDescription 'Add support for integration and system testing as well as report generation.'
+    pluginLicenses 'Apache-2.0'
+    pluginTags 'gradle', 'plugin', 'test', 'integration', 'system'
+    authorId 'abb'
+    authorName 'Andres Bühlmann'
+    authorEmail 'abi@nampa.ch'
+    projectUrl 'https://github.com/Andresbu/better-testing'
+    projectInceptionYear '2015'
+    done() // do not omit this
+}
+
+bintray.pkg.version.attributes = ['gradle-plugin': 'ch.nampa.better-testing:ch.nampa:better-testing-gradle-plugin']
+
+bintray {
+    user = "$BINTRAY_USER"
+    key = "$BINTRAY_API_KEY"
+    pkg.repo = 'gradle-plugins'
+}
+
+
+
